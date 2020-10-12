@@ -1,0 +1,123 @@
+//CALCULOS BASADOS EN PLATAFORMA DE 32 BYTES:
+
+// +08 bytes (heap) class ExamExercise ->  contructor default
+// +12 bytes (heap) class ApproachA    -> constructor default + 1 metodo
+// +44 bytes (heap) class Rectangle    -> constructor definido + 6 metodos + 4 Atributos 
+// +48 bytes (heap) class ApproachB    -> constructor default + 1 class Rectangle(44bytes)  
+//-----------------------------------------------------------------------------------------------
+
+//+16 bytes (stack) Punteros por la definicion de cada class.
+
+//+?? bytes (stack) Argumentos de main()
+//+04 bytes (stack) Llamado a main()
+//____________________________________________
+
+
+//+04 bytes (stack) Constantes implicita 0
+//+04 bytes (stack) Constantes implicita 10
+//+04 bytes (stack) Constantes implicita 2
+
+//ASUMIENDO QUE -> copia de direccion de memoria de las constantes implitas 0,10,2: 
+//x1 -> 0, y1 -> 0,  width1 -> 10,  height1 -> 10,  x2 -> 2, y2 -> 2, width2 -> 10, height2 -> 10
+
+//+04bytes   (stack)  copia de direccion de x1 
+//+04bytes   (stack)  copia de direccion de x2
+//+01bytes   (stack)  resultado x1 >= x2 
+
+//+04bytes   (stack)  copia de direccion de x2 para la suma
+//+04bytes   (stack)  copia de direccion de width2 para la suma
+//+04bytes   (stack)  copia de direccion de x1 
+//+01bytes   (stack)  resultado x1 <= x2 + width2
+
+//+01bytes   (stack)  resultado (resultado x1 >= x2 && resultado x1 <= x2 + width2) -> A
+//-01bytes   (stack)  resultado x1 >= x2    
+//-01bytes   (stack)  resultado x1 <= x2 + width2
+//-----------------------------------------------------
+
+//+04bytes   (stack)  copia de direccion de y1 
+//+04bytes   (stack)  copia de direccion de y2
+//+01bytes   (stack)  resultado y1 >= y2
+
+//+04bytes   (stack)  copia de direccion de y2 para la suma
+//+04bytes   (stack)  copia de direccion de height para la suma
+//+04bytes   (stack)  copia de direccion de y1 
+//+01bytes   (stack)  resultado y1 <= y2 + height
+
+//+01bytes   (stack)  resultado (y1 >= y2 && y1 <= y2 + height) -> B
+//-01bytes   (stack)  resultado y1 >= y2   
+//-01bytes   (stack)  resultado y1 <= y2 + height
+//------------------------------------------------------------------
+
+//+04bytes   (stack)  copia de direccion de x1 para la suma
+//+04bytes   (stack)  copia de direccion de width1 para la suma
+//+04bytes   (stack)  copia de direccion de x2
+//+01bytes   (stack)  resultado x1 + width1 >= x2
+
+//+04bytes   (stack)  copia de direccion de x1 para la suma
+//+04bytes   (stack)  copia de direccion de width1 para la suma
+//+04bytes   (stack)  copia de direccion de x2 para la suma
+//+04bytes   (stack)  copia de direccion de width2 para la suma
+//+01bytes   (stack)  resultado x1 + width1 <= x2 + width2
+
+//+01bytes   (stack)  resultado (x1 + width1 >= x2 && x1 + width1 <= x2 + width2) -> C
+//-01bytes   (stack)  resultado x1 + width1 >= x2  
+//-01bytes   (stack)  resultado x1 + width1 <= x2 + width2
+//---------------------------------------------------------------------------
+
+//+04bytes   (stack)  copia de direccion de y1 para la suma
+//+04bytes   (stack)  copia de direccion de height1 para la suma
+//+04bytes   (stack)  copia de direccion de y2 
+//+01bytes   (stack)  resultado y1 + height1 >= y2
+
+//+04bytes   (stack)  copia de direccion de y1 para la suma
+//+04bytes   (stack)  copia de direccion de height1 para la suma
+//+04bytes   (stack)  copia de direccion de y2 para la suma
+//+04bytes   (stack)  copia de direccion de height2 para la suma
+//+01bytes   (stack)  resultado y1 + height1 <= y2 + height2
+
+//+01bytes   (stack)  resultado (y1 + height1 >= y2 && y1 + height1 <= y2 + height2) -> D
+//-01bytes   (stack)  resultado y1 + height1 >= y2  
+//-01bytes   (stack)  resultado y1 + height1 <= y2 + height2
+
+//---------------------------------------------------------------
+//+01bytes   (stack)  resultado (A && B)
+//-01bytes   (stack)  resultado A
+//-01bytes   (stack)  resultado B
+
+//+01bytes   (stack)  resultado (C && D)
+//-01bytes   (stack)  resultado C
+//-01bytes   (stack)  resultado D
+
+//-01bytes   (stack)  resultado (C && D)
+//-01bytes   (stack)  resultado (A && B)
+//+01bytes   (stack)  resultado (A && B || C && D) -> resultado parametros ApproachA.rectanglesIntersect() 
+
+//+04bytes  (stack) Llamado de ApproachA.rectanglesIntersect() 
+//+05bytes  (stack) parametros System.out.println()
+//+04bytes  (stack) Llamado System.out.println()
+
+//-01bytes   (stack)  resultado (A && B || C && D) -> resultado parametros ApproachA.rectanglesIntersect() 
+//-04bytes  (stack) Llamado de ApproachA.rectanglesIntersect() 
+//-05bytes  (stack) parametros System.out.println()
+//_____________________________________________________________________________________
+
+//+04bytes   (heap)   Instancia de ApproachB
+//+04bytres  (stack)  Puntero a la instancia de ApproachB en r1
+//+04bytes   (stack)  llamado de Rectangle() con la direccion de memoria de la instancia de ApproachB
+//+16bytes   (stack)  llamado de Rectangle() a su constructor -> duda
+//+04bytes   (stack)  copia de direccion de memoria 0
+//+04bytes   (stack)  copia de direccion de memoria 0
+//+04bytes   (stack)  copia de direccion de memoria 10
+//+04bytes   (stack)  copia de direccion de memoria 10
+
+
+
+//+04bytes   (heap)   Instancia de ApproachB
+//+04bytres  (stack)  Puntero a la instancia de ApproachB en r2
+//+04bytes   (stack)  llamado de Rectangle() con la direccion de memoria de la instancia de ApproachB
+//+16bytes   (stack)  llamado de Rectangle() a su constructor -> duda
+//+04bytes   (stack)  copia de direccion de memoria 0
+//+04bytes   (stack)  copia de direccion de memoria 0
+//+04bytes   (stack)  copia de direccion de memoria 10
+//+04bytes   (stack)  copia de direccion de memoria 10
+
